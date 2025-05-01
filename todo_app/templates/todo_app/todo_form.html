@@ -1,0 +1,29 @@
+{% extends 'todo_app/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Task{% else %}New Task{% endif %}{% endblock %}
+
+{% block content %}
+    <h2>{% if form.instance.pk %}Edit Task{% else %}New Task{% endif %}</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div>
+            <label for="{{ form.title.id_for_label }}">Title:</label>
+            {{ form.title }}
+        </div>
+        
+        <div>
+            <label for="{{ form.description.id_for_label }}">Description:</label>
+            {{ form.description }}
+        </div>
+        
+        <div>
+            {{ form.completed }}
+            <label for="{{ form.completed.id_for_label }}">Completed</label>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'todo_list' %}" class="btn btn-primary">Cancel</a>
+    </form>
+{% endblock %}

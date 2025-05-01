@@ -1,0 +1,18 @@
+{% extends 'todo_app/base.html' %}
+
+{% block title %}Task Details{% endblock %}
+
+{% block content %}
+    <h2>{{ todo.title }}</h2>
+    <div class="todo-item {% if todo.completed %}completed{% endif %}">
+        <p>{{ todo.description }}</p>
+        <p>Status: {% if todo.completed %}Completed{% else %}Pending{% endif %}</p>
+        <p>Created: {{ todo.created_at|date:"F d, Y H:i" }}</p>
+        
+        <div>
+            <a href="{% url 'todo_list' %}" class="btn btn-primary">Back to List</a>
+            <a href="{% url 'todo_update' todo.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'todo_delete' todo.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+{% endblock %}

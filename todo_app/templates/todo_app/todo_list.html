@@ -1,0 +1,28 @@
+{% extends 'todo_app/base.html' %}
+
+{% block title %}Todo List{% endblock %}
+
+{% block content %}
+    <h2>My Tasks</h2>
+    
+    {% if todos %}
+        <ul class="todo-list">
+            {% for todo in todos %}
+                <li class="todo-item {% if todo.completed %}completed{% endif %}">
+                    <h3>{{ todo.title }}</h3>
+                    <p>{{ todo.description|truncatewords:15 }}</p>
+                    <div>
+                        <a href="{% url 'todo_toggle' todo.id %}" class="btn btn-success">
+                            {% if todo.completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+                        </a>
+                        <a href="{% url 'todo_detail' todo.id %}" class="btn btn-primary">View</a>
+                        <a href="{% url 'todo_update' todo.id %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'todo_delete' todo.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks yet. <a href="{% url 'todo_create' %}">Add a new task</a>.</p>
+    {% endif %}
+{% endblock %}
