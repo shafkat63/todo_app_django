@@ -3,16 +3,30 @@
 {% block title %}Task Details{% endblock %}
 
 {% block content %}
-    <h2>{{ todo.title }}</h2>
-    <div class="todo-item {% if todo.completed %}completed{% endif %}">
-        <p>{{ todo.description }}</p>
-        <p>Status: {% if todo.completed %}Completed{% else %}Pending{% endif %}</p>
-        <p>Created: {{ todo.created_at|date:"F d, Y H:i" }}</p>
-        
-        <div>
-            <a href="{% url 'todo_list' %}" class="btn btn-primary">Back to List</a>
-            <a href="{% url 'todo_update' todo.id %}" class="btn btn-warning">Edit</a>
-            <a href="{% url 'todo_delete' todo.id %}" class="btn btn-danger">Delete</a>
+    <h2 class="mb-4">{{ todo.title }}</h2>
+
+    <div class="card {% if todo.completed %}border-success{% else %}border-secondary{% endif %} mb-4">
+        <div class="card-body">
+            <p class="card-text">{{ todo.description }}</p>
+
+            <p class="mb-1">
+                <strong>Status:</strong>
+                {% if todo.completed %}
+                    <span class="badge bg-success">Completed</span>
+                {% else %}
+                    <span class="badge bg-secondary">Pending</span>
+                {% endif %}
+            </p>
+
+            <p class="mb-3">
+                <strong>Created:</strong> {{ todo.created_at|date:"F d, Y H:i" }}
+            </p>
+
+            <div class="d-flex gap-2">
+                <a href="{% url 'todo_list' %}" class="btn btn-outline-primary">Back to List</a>
+                <a href="{% url 'todo_update' todo.id %}" class="btn btn-outline-warning">Edit</a>
+                <a href="{% url 'todo_delete' todo.id %}" class="btn btn-outline-danger">Delete</a>
+            </div>
         </div>
     </div>
 {% endblock %}

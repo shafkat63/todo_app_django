@@ -3,26 +3,63 @@
 {% block title %}Todo List{% endblock %}
 
 {% block content %}
-    <h2>My Tasks</h2>
-    
-    {% if todos %}
-        <ul class="todo-list">
-            {% for todo in todos %}
-                <li class="todo-item {% if todo.completed %}completed{% endif %}">
-                    <h3>{{ todo.title }}</h3>
-                    <p>{{ todo.description|truncatewords:15 }}</p>
-                    <div>
-                        <a href="{% url 'todo_toggle' todo.id %}" class="btn btn-success">
-                            {% if todo.completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
-                        </a>
-                        <a href="{% url 'todo_detail' todo.id %}" class="btn btn-primary">View</a>
-                        <a href="{% url 'todo_update' todo.id %}" class="btn btn-warning">Edit</a>
-                        <a href="{% url 'todo_delete' todo.id %}" class="btn btn-danger">Delete</a>
+<h2 class="mb-4">My Tasks</h2>
+
+{% if todos %}
+    <div class="list-group card p-4">
+        {% for todo in todos %}
+            <div class="todo-item {% if todo.completed %}completed{% endif %} list-group-item d-flex flex-column align-items-start mb-2">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ todo.title }}</h5>
+                    <small class="text-muted">
+                        {% if todo.completed %}
+                            <span class="badge bg-success">Completed</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Pending</span>
+                        {% endif %}
+                    </small>
+                </div>
+                <p class="mb-2">{{ todo.description|truncatewords:15 }}</p>
+                <div class="mt-2">
+                    <a href="{% url 'todo_toggle' todo.id %}" class="btn btn-sm btn-outline-success me-2">
+                        {% if todo.completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+                    </a>
+                    <a href="{% url 'todo_detail' todo.id %}" class="btn btn-sm btn-outline-primary me-2">View</a>
+                    <a href="{% url 'todo_update' todo.id %}" class="btn btn-sm btn-outline-warning me-2">Edit</a>
+
+                    <!-- Trigger modal -->
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ todo.id }}">
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal{{ todo.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ todo.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'todo_delete' todo.id %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel{{ todo.id }}">Confirm Deletion</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete <strong>{{ todo.title }}</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                            </div>
+                        </form>
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No tasks yet. <a href="{% url 'todo_create' %}">Add a new task</a>.</p>
-    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        No tasks yet. <a href="{% url 'todo_create' %}" class="alert-link">Add a new task</a>.
+    </div>
+{% endif %}
 {% endblock %}

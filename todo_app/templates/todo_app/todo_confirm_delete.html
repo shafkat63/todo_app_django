@@ -3,15 +3,15 @@
 {% block title %}Delete Task{% endblock %}
 
 {% block content %}
-    <h2>Delete Task</h2>
-    
-    <div>
-        <p>Are you sure you want to delete the task "{{ todo.title }}"?</p>
+    <h2 class="mb-4">Delete Task</h2>
+
+    <div class="alert alert-warning" role="alert">
+        <p class="mb-0">Are you sure you want to delete the task <strong>"{{ todo.title }}"</strong>?</p>
     </div>
-    
-    <form method="post">
+
+    <form method="post" class="d-flex gap-2">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Yes, Delete</button>
-        <a href="{% url 'todo_list' %}" class="btn btn-primary">Cancel</a>
+        <a href="{% url 'todo_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
-{% endblock %}  
+{% endblock %}
